@@ -39,15 +39,16 @@ export default function UserRegister({ navigation }: UserRegisterProps) {
     };
 
     const onCompleted = (response: UserRegisterWithEmailMutationResponse) => {
+      setLoading(false);
       if (!response.UserRegisterWithEmail) return;
 
       const { error, token } = response.UserRegisterWithEmail;
 
       error && Alert.alert(error);
 
-      token && AsyncStorage.setItem(TT_TOKEN, token) && Alert.alert(token);
-
-      setLoading(false);
+      token &&
+        AsyncStorage.setItem(TT_TOKEN, token) &&
+        navigation.navigate("FeedNavigator");
     };
 
     const onError = () => {

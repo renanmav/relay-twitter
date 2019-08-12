@@ -42,15 +42,16 @@ export default function UserLogin({ navigation }: UserLoginProps) {
     };
 
     const onCompleted = (response: UserLoginWithEmailMutationResponse) => {
+      setLoading(false);
       if (!response.UserLoginWithEmail) return;
 
       const { error, token } = response.UserLoginWithEmail;
 
       error && Alert.alert(error);
 
-      token && AsyncStorage.setItem(TT_TOKEN, token) && Alert.alert(token);
-
-      setLoading(false);
+      token &&
+        AsyncStorage.setItem(TT_TOKEN, token) &&
+        navigation.navigate("FeedNavigator");
     };
 
     const onError = () => {
