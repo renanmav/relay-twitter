@@ -26,7 +26,6 @@ export const Content = styled.SafeAreaView`
 `;
 
 export const Input = styled.TextInput.attrs({
-  autoCapitalize: "none",
   autoCorrect: false,
   placeholderTextColor: colors.regular.string()
 })`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StatusBar,
   Keyboard,
@@ -6,45 +6,42 @@ import {
   Alert,
   ActivityIndicator
 } from "react-native";
-import SplashScreen from "react-native-splash-screen";
+import AsyncStorage from "@react-native-community/async-storage";
+import { NavigationScreenProp } from "react-navigation";
 
-import UserLoginWithEmailMutation from "./mutation/UserLoginWithEmailMutation";
+import UserRegisterWithEmailMutation from "./mutation/UserRegisterWithEmailMutation";
+import { UserRegisterWithEmailMutationResponse } from "./mutation/__generated__/UserRegisterWithEmailMutation.graphql";
 
 import { Container, Content, Input, Button, ButtonText, Logo } from "./styles";
 import { colors } from "../../styles";
-import { UserLoginWithEmailMutationResponse } from "./mutation/__generated__/UserLoginWithEmailMutation.graphql";
-import AsyncStorage from "@react-native-community/async-storage";
 import { TT_TOKEN } from "../../constants";
 
-import { NavigationScreenProp } from "react-navigation";
-
-interface UserLoginProps {
+interface UserRegisterProps {
   navigation: NavigationScreenProp<{}>;
 }
 
-export default function UserLogin({ navigation }: UserLoginProps) {
+export default function UserRegister({ navigation }: UserRegisterProps) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
-
   const secondInput = React.createRef<TextInput>();
+  const thirdInput = React.createRef<TextInput>();
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     setLoading(true);
 
     const input = {
+      name,
       email,
       password
     };
 
-    const onCompleted = (response: UserLoginWithEmailMutationResponse) => {
-      if (!response.UserLoginWithEmail) return;
+    const onCompleted = (response: UserRegisterWithEmailMutationResponse) => {
+      if (!response.UserRegisterWithEmail) return;
 
-      const { error, token } = response.UserLoginWithEmail;
+      const { error, token } = response.UserRegisterWithEmail;
 
       error && Alert.alert(error);
 
@@ -59,7 +56,7 @@ export default function UserLogin({ navigation }: UserLoginProps) {
       setLoading(false);
     };
 
-    UserLoginWithEmailMutation.commit(input, onCompleted, onError);
+    UserRegisterWithEmailMutation.commit(input, onCompleted, onError);
   };
 
   return (
@@ -72,12 +69,22 @@ export default function UserLogin({ navigation }: UserLoginProps) {
         <Content>
           <Logo />
           <Input
+            placeholder="Nome"
+            returnKeyType="next"
+            value={name}
+            onChangeText={n => setName(n)}
+            onSubmitEditing={() => secondInput.current!.focus()}
+            autoCapitalize="words"
+          />
+          <Input
             keyboardType="email-address"
             placeholder="E-mail"
             returnKeyType="next"
             value={email}
             onChangeText={e => setEmail(e)}
-            onSubmitEditing={() => secondInput.current!.focus()}
+            ref={secondInput}
+            onSubmitEditing={() => thirdInput.current!.focus()}
+            autoCapitalize="none"
           />
           <Input
             secureTextEntry
@@ -85,18 +92,19 @@ export default function UserLogin({ navigation }: UserLoginProps) {
             returnKeyType="send"
             value={password}
             onChangeText={p => setPassword(p)}
-            ref={secondInput}
-            onSubmitEditing={handleLogin}
+            ref={thirdInput}
+            onSubmitEditing={handleRegister}
+            autoCapitalize="none"
           />
-          <Button onPress={handleLogin}>
+          <Button onPress={handleRegister}>
             {loading ? (
               <ActivityIndicator size={18} color={colors.primary.string()} />
             ) : (
-              <ButtonText>Entrar</ButtonText>
+              <ButtonText>Registrar-se</ButtonText>
             )}
           </Button>
-          <Button colorfull onPress={() => navigation.navigate("UserRegister")}>
-            <ButtonText light>Registre-se</ButtonText>
+          <Button colorfull onPress={() => navigation.navigate("UserLogin")}>
+            <ButtonText light>Voltar ao login</ButtonText>
           </Button>
         </Content>
       </Container>
