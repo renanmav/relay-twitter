@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusBar, Keyboard } from "react-native";
+import SplashScreen from "react-native-splash-screen";
 
 import { Container, Content, Input, Button, ButtonText, Logo } from "./styles";
 import { colors } from "../../styles";
@@ -7,6 +8,10 @@ import { colors } from "../../styles";
 export default function UserLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   return (
     <>

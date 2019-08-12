@@ -9,7 +9,7 @@ export const colors = {
   darker: Color("#333"),
   black: Color("#000"),
 
-  primary: Color("#1B91DA"),
+  primary: Color("#1EA1F3"),
 
   foreground: Color("#F5F8FA"),
 
