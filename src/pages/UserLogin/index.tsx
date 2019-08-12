@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StatusBar, Keyboard } from "react-native";
+import { StatusBar, Keyboard, TextInput } from "react-native";
 import SplashScreen from "react-native-splash-screen";
 
 import { Container, Content, Input, Button, ButtonText, Logo } from "./styles";
@@ -12,6 +12,8 @@ export default function UserLogin() {
   useEffect(() => {
     SplashScreen.hide();
   }, []);
+
+  const secondInput = React.createRef<TextInput>();
 
   return (
     <>
@@ -28,6 +30,7 @@ export default function UserLogin() {
             returnKeyType="next"
             value={email}
             onChangeText={e => setEmail(e)}
+            onSubmitEditing={() => secondInput.current!.focus()}
           />
           <Input
             secureTextEntry
@@ -35,6 +38,7 @@ export default function UserLogin() {
             returnKeyType="send"
             value={password}
             onChangeText={p => setPassword(p)}
+            ref={secondInput}
           />
           <Button>
             <ButtonText>Entrar</ButtonText>
