@@ -50,6 +50,7 @@ export const Button = styled.TouchableOpacity<ButtonProps>`
   background: ${({ colorfull }) =>
     colorfull ? colors.primary.string() : colors.white.string()};
   margin-top: 20px;
+  height: 42px;
 `;
 
 interface ButtonTextProps {
