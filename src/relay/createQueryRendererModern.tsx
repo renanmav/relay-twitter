@@ -1,5 +1,5 @@
-import React from "react";
-import { Text } from "react-native";
+import * as React from "react";
+import { Text, View } from "react-native";
 import { GraphQLTaggedNode, Variables } from "relay-runtime";
 import { QueryRenderer } from "react-relay";
 import hoistStatics from "hoist-non-react-statics";
@@ -14,10 +14,10 @@ interface Config {
 }
 
 export default function createQueryRenderer(
-  FragmentComponent: React.ComponentType,
-  Component: React.ComponentType,
+  FragmentComponent: React.ComponentType<any>,
+  Component: React.ComponentType<any>,
   config: Config
-): JSX.Element {
+): React.ComponentType {
   const { query, queriesParams } = config;
 
   class QueryRendererWrapper extends React.Component {
@@ -26,29 +26,26 @@ export default function createQueryRenderer(
         ? queriesParams(this.props)
         : config.variables;
 
-      if (variables)
-        return (
-          <QueryRenderer
-            environment={Environment}
-            query={query}
-            variables={variables}
-            render={({ error, props }) => {
-              if (error) {
-                return <Text>{error.toString()}</Text>;
-              }
+      return (
+        <QueryRenderer
+          environment={Environment}
+          query={query}
+          variables={variables!}
+          render={({ error, props }) => {
+            if (error) {
+              return <Text>{error.toString()}</Text>;
+            }
 
-              if (props) {
-                // @ts-ignore
-                return <FragmentComponent {...this.props} query={props} />;
-              }
+            if (props) {
+              return <FragmentComponent {...this.props} query={props} />;
+            }
 
-              return <Text>Loading</Text>;
-            }}
-          />
-        );
+            return <View />;
+          }}
+        />
+      );
     }
   }
 
-  // @ts-ignore
   return hoistStatics(QueryRendererWrapper, Component);
 }
