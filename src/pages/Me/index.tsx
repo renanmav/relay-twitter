@@ -47,9 +47,5 @@ export default createQueryRenderer(MeFragmentContainer, Me, {
     query MeQuery {
       ...Me_query
     }
-  `,
-  queriesParams: () => ({
-    Authorization:
-      "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNGNjMTVlMmVmNzMwMWZkNTY3YTc0YiIsImlhdCI6MTU2NTcwMDY4NX0.0EejFGLyW4I-VsysTJ29WWO5AOV3L8NXVaM57ptAHdY"
-  })
+  `
 });
