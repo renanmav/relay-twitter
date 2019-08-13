@@ -7,7 +7,7 @@ import fetchWithRetries from "./fetchWithRetries";
 import { TT_TOKEN } from "../constants";
 
 export const GRAPHQL_URL = Platform.select({
-  android: "http://10.0.3.2:5000/graphql",
+  android: "http://10.0.0.112:5000/graphql",
   ios: "http://localhost:5000/graphql"
 });
 
