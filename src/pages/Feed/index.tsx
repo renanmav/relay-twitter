@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StatusBar, Text } from "react-native";
+import { StatusBar, FlatList } from "react-native";
 import {
   createStackNavigator,
   NavigationScreenComponent
@@ -10,6 +10,9 @@ import { colors } from "../../styles";
 import FabNewTweet from "../../components/FabNewTweet";
 import { Container } from "./styles";
 import NewTweet from "../NewTweet";
+import Tweet from "../../components/Tweet";
+
+import { data } from "./mock";
 
 const Feed: NavigationScreenComponent = ({ navigation }) => {
   useEffect(() => {
@@ -22,7 +25,11 @@ const Feed: NavigationScreenComponent = ({ navigation }) => {
         backgroundColor={colors.white.string()}
       />
       <Container>
-        <Text>Content</Text>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => <Tweet data={item} />}
+          keyExtractor={({ _id }) => _id}
+        />
         <FabNewTweet onPress={() => navigation.navigate("NewTweet")} />
       </Container>
     </>
