@@ -17,6 +17,7 @@ import {
 import { createQueryRendererModern } from "../../relay";
 import { Feed_query } from "./__generated__/Feed_query.graphql";
 import { TT_ITEMS_PER_PAGE } from "../../constants";
+import NewTweetSubscription from "./subscription/NewTweetSubscription";
 
 interface RelayProps {
   query: Feed_query;
@@ -30,6 +31,7 @@ const Feed = ({ navigation, query, relay }: FeedProps) => {
 
   useEffect(() => {
     SplashScreen.hide();
+    NewTweetSubscription();
   }, []);
 
   const { tweets } = query;

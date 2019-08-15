@@ -9,7 +9,8 @@
     "clean": "react-native start --reset-cache",
     "test": "jest",
     "lint": "eslint .",
-    "relay": "relay-compiler --watchman false --src ./src --schema data/schema.graphql --language typescript"
+    "relay": "relay-compiler --watchman false --src ./src --schema data/schema.graphql --language typescript",
+    "devtools": "relay-devtools"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
@@ -22,7 +23,8 @@
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.11.1",
     "react-relay": "^5.0.0",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

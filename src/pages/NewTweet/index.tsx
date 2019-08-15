@@ -24,7 +24,7 @@ const NewTweet: NavigationScreenComponent = ({ navigation }) => {
 
       error && Alert.alert(error);
 
-      success && setContent("") && Alert.alert("Tweet salvo com sucesso");
+      success && navigation.goBack();
     };
 
     const onError = () => {
@@ -32,7 +32,6 @@ const NewTweet: NavigationScreenComponent = ({ navigation }) => {
     };
 
     TweetCreateMutation.commit(input, onCompleted, onError);
-    navigation.goBack();
   };
 
   return (

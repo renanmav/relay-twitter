@@ -4,11 +4,15 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { Platform } from "react-native";
 
 import fetchWithRetries from "./fetchWithRetries";
-import { TT_TOKEN } from "../constants";
+import {
+  TT_TOKEN,
+  GRAPHQL_ANDROID_ENDPOINT,
+  GRAPHQL_IOS_ENDPOINT
+} from "../constants";
 
 export const GRAPHQL_URL = Platform.select({
-  android: "http://10.0.0.112:5000/graphql",
-  ios: "http://localhost:5000/graphql"
+  android: GRAPHQL_ANDROID_ENDPOINT,
+  ios: GRAPHQL_IOS_ENDPOINT
 });
 
 const fetchQuery = async (
