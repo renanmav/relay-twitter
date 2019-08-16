@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
 import { colors } from "../../styles";
 
+import { getBottomSpace } from "react-native-iphone-x-helper";
+
 export const Container = styled.TouchableOpacity`
   background: ${colors.primary.string()};
   position: absolute;
@@ -13,4 +15,5 @@ export const Container = styled.TouchableOpacity`
   height: 54px;
   width: 54px;
   elevation: 10;
+  margin-bottom: ${getBottomSpace()}px;
 `;
