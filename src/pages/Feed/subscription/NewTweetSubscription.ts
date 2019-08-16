@@ -1,6 +1,6 @@
 import { graphql, requestSubscription } from "react-relay";
 import { Environment } from "../../../relay";
-import { GraphQLSubscriptionConfig } from "relay-runtime";
+import { GraphQLSubscriptionConfig, ConnectionHandler } from "relay-runtime";
 import { NewTweetSubscriptionResponse } from "./__generated__/NewTweetSubscription.graphql";
 
 const newTweetSubscription = graphql`
@@ -28,17 +28,26 @@ export default () => {
   > = {
     subscription: newTweetSubscription,
     variables: {},
-    onNext: response => {
-      if (!response) return;
-
-      const { NewTweet } = response;
-      console.log(NewTweet);
-    },
     onError: error => console.log(error),
     // @ts-ignore
-    updater: (store, data: NewTweetSubscriptionResponse) => {
+    updater: store => {
+      const payload = store.getRootField("NewTweet");
+      const edge = payload!.getLinkedRecord("tweetEdge");
+      const tweet = edge!.getLinkedRecord("node");
+
       const root = store.getRoot();
-      console.log(root);
+
+      const tweetsConnection = ConnectionHandler.getConnection(
+        root,
+        "Feed_tweets"
+      );
+      const tweetEdge = ConnectionHandler.createEdge(
+        store,
+        tweetsConnection!,
+        tweet!,
+        "TweetsEdge"
+      );
+      ConnectionHandler.insertEdgeBefore(tweetsConnection!, tweetEdge!);
     }
   };
 
