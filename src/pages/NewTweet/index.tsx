@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Alert } from "react-native";
+import { Alert } from "react-native";
 import { NavigationScreenComponent, withNavigation } from "react-navigation";
 
 import CancelarButton from "../../components/CancelarButton";
 import TweetarButton from "../../components/TweetarButton";
-import { Buttons, TweetInput } from "./styles";
+import { Container, Buttons, TweetInput } from "./styles";
 import { TweetCreateMutationResponse } from "./mutation/__generated__/TweetCreateMutation.graphql";
 import TweetCreateMutation from "./mutation/TweetCreateMutation";
 
@@ -35,7 +35,7 @@ const NewTweet: NavigationScreenComponent = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <Container>
       <Buttons>
         <CancelarButton />
         <TweetarButton disabled={!content.length} onPress={handleCreateTweet} />
@@ -47,7 +47,7 @@ const NewTweet: NavigationScreenComponent = ({ navigation }) => {
         autoFocus
         multiline
       />
-    </View>
+    </Container>
   );
 };
 
