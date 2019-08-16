@@ -55,7 +55,7 @@ export default function UserLogin({ navigation }: UserLoginProps) {
     };
 
     const onError = () => {
-      Alert.alert("Algo deu eraddo no login");
+      Alert.alert("Algo deu errado no login");
 
       setLoading(false);
     };
@@ -79,6 +79,7 @@ export default function UserLogin({ navigation }: UserLoginProps) {
             value={email}
             onChangeText={e => setEmail(e)}
             onSubmitEditing={() => secondInput.current!.focus()}
+            autoCapitalize="none"
           />
           <Input
             secureTextEntry
@@ -88,6 +89,7 @@ export default function UserLogin({ navigation }: UserLoginProps) {
             onChangeText={p => setPassword(p)}
             ref={secondInput}
             onSubmitEditing={handleLogin}
+            autoCapitalize="none"
           />
           <Button onPress={handleLogin}>
             {loading ? (

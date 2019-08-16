@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import { colors } from "../../styles";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 // @ts-ignore
 import logo from "../../assets/img/logo.png";
@@ -14,19 +14,22 @@ export const Logo = styled.Image.attrs({
   margin-bottom: 30px;
 `;
 
-export const Container = styled.TouchableWithoutFeedback``;
+export const Container = styled.TouchableWithoutFeedback`
+  justify-content: flex-end;
+  flex: 1;
+`;
 
-export const Content = styled.SafeAreaView`
+export const Content = styled.KeyboardAvoidingView.attrs({
+  behavior: Platform.OS === "ios" ? "padding" : undefined
+})`
   flex: 1;
   background: ${colors.white.string()};
   justify-content: center;
   align-items: center;
-  width: 100%;
-  padding: 0px 40px;
+  margin: 0px 40px;
 `;
 
 export const Input = styled.TextInput.attrs({
-  autoCapitalize: "none",
   autoCorrect: false,
   placeholderTextColor: colors.regular.string()
 })`
@@ -35,6 +38,7 @@ export const Input = styled.TextInput.attrs({
   width: 100%;
   padding: 0;
   margin-top: 24px;
+  padding-bottom: 5px;
 `;
 
 interface ButtonProps {
@@ -48,6 +52,7 @@ export const Button = styled.TouchableOpacity<ButtonProps>`
   padding: 10px 20px;
   width: 100%;
   align-items: center;
+  justify-content: center;
   background: ${({ colorfull }) =>
     colorfull ? colors.primary.string() : colors.white.string()};
   margin-top: 20px;

@@ -12,7 +12,14 @@ import { NavigationScreenProp } from "react-navigation";
 import UserRegisterWithEmailMutation from "./mutation/UserRegisterWithEmailMutation";
 import { UserRegisterWithEmailMutationResponse } from "./mutation/__generated__/UserRegisterWithEmailMutation.graphql";
 
-import { Container, Content, Input, Button, ButtonText, Logo } from "./styles";
+import {
+  Container,
+  Content,
+  Input,
+  Button,
+  ButtonText,
+  Logo
+} from "../UserLogin/styles";
 import { colors } from "../../styles";
 import { TT_TOKEN } from "../../constants";
 
@@ -52,7 +59,7 @@ export default function UserRegister({ navigation }: UserRegisterProps) {
     };
 
     const onError = () => {
-      Alert.alert("Algo deu eraddo no login");
+      Alert.alert("Algo deu errado no login");
 
       setLoading(false);
     };
