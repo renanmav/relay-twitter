@@ -45,11 +45,14 @@ export default function Tweet({ data }: TweetProps) {
       retweet
     };
 
+    const feedback = like ? "likes" : "retweets";
+
     const optimisticUpdater: SelectorStoreUpdater = store => {
       const tweet = store.get(data.id);
-      const likes = tweet!.getValue("likes");
-      const newLikes = (likes as number) + 1;
-      tweet!.setValue(newLikes, "likes");
+
+      const likeOrRt = tweet!.getValue(feedback);
+      const newLikesOrRts = (likeOrRt as number) + 1;
+      tweet!.setValue(newLikesOrRts, feedback);
     };
 
     const updater: SelectorStoreUpdater<TweetUpdateMutationResponse> = (
@@ -57,13 +60,14 @@ export default function Tweet({ data }: TweetProps) {
       _optimisticUpdate
     ) => {
       const tweetUpdateField = store!.getRootField("TweetUpdate");
-      const likes = tweetUpdateField!.getValue("likes");
+
+      const likesOrRts = tweetUpdateField!.getValue(feedback);
       const tweet = store.get(data.id);
-      tweet!.setValue(likes, "likes");
+      tweet!.setValue(likesOrRts, feedback);
     };
 
     const onError = () => {
-      Alert.alert("Algo deu errado ao salvar o like");
+      Alert.alert(`Algo deu errado ao salvar os ${feedback}`);
     };
 
     TweetUpdateMutation.commit(input, optimisticUpdater, updater, onError);
