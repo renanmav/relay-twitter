@@ -28,6 +28,7 @@ fragment Feed_query on Query {
   tweets(first: $count, after: $cursor) {
     edges {
       node {
+        id
         _id
         content
         likes
@@ -36,7 +37,6 @@ fragment Feed_query on Query {
           name
           id
         }
-        id
         __typename
       }
       cursor
@@ -131,6 +131,7 @@ return {
                 "concreteType": "Tweet",
                 "plural": false,
                 "selections": [
+                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -178,7 +179,6 @@ return {
                       (v2/*: any*/)
                     ]
                   },
-                  (v2/*: any*/),
                   {
                     "kind": "ScalarField",
                     "alias": null,
@@ -239,7 +239,7 @@ return {
     "operationKind": "query",
     "name": "FeedQuery",
     "id": null,
-    "text": "query FeedQuery(\n  $count: Int!\n  $cursor: String\n) {\n  ...Feed_query\n}\n\nfragment Feed_query on Query {\n  tweets(first: $count, after: $cursor) {\n    edges {\n      node {\n        _id\n        content\n        likes\n        retweets\n        author {\n          name\n          id\n        }\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
+    "text": "query FeedQuery(\n  $count: Int!\n  $cursor: String\n) {\n  ...Feed_query\n}\n\nfragment Feed_query on Query {\n  tweets(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        _id\n        content\n        likes\n        retweets\n        author {\n          name\n          id\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n",
     "metadata": {}
   }
 };

@@ -1,5 +1,7 @@
 import React from "react";
 import Icon from "react-native-vector-icons/EvilIcons";
+import { Alert } from "react-native";
+import { SelectorStoreUpdater } from "relay-runtime";
 
 import {
   Container,
@@ -11,21 +13,22 @@ import {
   NumberOfFeedbacks,
   ProfilePic
 } from "./styles";
-import { TweetUpdateInput } from "./mutation/__generated__/TweetUpdateMutation.graphql";
-import { Alert } from "react-native";
+import {
+  TweetUpdateInput,
+  TweetUpdateMutationResponse
+} from "./mutation/__generated__/TweetUpdateMutation.graphql";
 import TweetUpdateMutation from "./mutation/TweetUpdateMutation";
-import { SelectorStoreUpdater } from "relay-runtime";
 
 interface TweetProps {
   data: {
-    id: string;
-    _id: string;
-    content: string;
-    likes: number;
-    retweets: number;
-    author: {
-      name: string;
-    };
+    readonly id: string;
+    readonly _id: string | null;
+    readonly content: string | null;
+    readonly likes: number | null;
+    readonly retweets: number | null;
+    readonly author: {
+      readonly name: string | null;
+    } | null;
   };
 }
 
@@ -37,16 +40,26 @@ export default function Tweet({ data }: TweetProps) {
     }
   ) => {
     const input: TweetUpdateInput = {
-      id: data._id,
+      id: data._id!,
       like,
       retweet
     };
 
-    const optimisticUpdater: SelectorStoreUpdater = () => {};
+    const optimisticUpdater: SelectorStoreUpdater = store => {
+      const tweet = store.get(data.id);
+      const likes = tweet!.getValue("likes");
+      const newLikes = (likes as number) + 1;
+      tweet!.setValue(newLikes, "likes");
+    };
 
-    const updater: SelectorStoreUpdater = store => {
-      const root = store.getRoot();
-      console.log(root);
+    const updater: SelectorStoreUpdater<TweetUpdateMutationResponse> = (
+      store,
+      _optimisticUpdate
+    ) => {
+      const tweetUpdateField = store!.getRootField("TweetUpdate");
+      const likes = tweetUpdateField!.getValue("likes");
+      const tweet = store.get(data.id);
+      tweet!.setValue(likes, "likes");
     };
 
     const onError = () => {
@@ -60,7 +73,7 @@ export default function Tweet({ data }: TweetProps) {
     <Container>
       <ProfilePic />
       <Wrapper>
-        <AuthorName>{data.author.name}</AuthorName>
+        <AuthorName>{data.author!.name}</AuthorName>
         <Content>{data.content}</Content>
         <FeedbackWrapper>
           <Feedback>

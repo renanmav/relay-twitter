@@ -6,6 +6,7 @@ export type Feed_query = {
     readonly tweets: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly id: string;
                 readonly _id: string | null;
                 readonly content: string | null;
                 readonly likes: number | null;
@@ -81,6 +82,13 @@ const node: ReaderFragment = {
               "concreteType": "Tweet",
               "plural": false,
               "selections": [
+                {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "id",
+                  "args": null,
+                  "storageKey": null
+                },
                 {
                   "kind": "ScalarField",
                   "alias": null,
@@ -174,5 +182,5 @@ const node: ReaderFragment = {
     }
   ]
 };
-(node as any).hash = 'f7644d63ff3682325afe0f7a42bd6a30';
+(node as any).hash = '13d5b94be9c3a8e0099acf72871ff226';
 export default node;

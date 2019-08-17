@@ -83,6 +83,7 @@ const FeedPaginationContainer = createPaginationContainer(
         tweets(first: $count, after: $cursor) @connection(key: "Feed_tweets") {
           edges {
             node {
+              id
               _id
               content
               likes
