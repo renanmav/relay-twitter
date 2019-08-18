@@ -1,9 +1,9 @@
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
 
-import Me from "./pages/Me";
-import UserLogin from "./pages/UserLogin";
-import UserRegister from "./pages/UserRegister";
-import FeedNavigator from "./pages/Feed";
+import Me from "../pages/Me";
+import UserLogin from "../pages/UserLogin";
+import UserRegister from "../pages/UserRegister";
+import FeedNavigator from "../pages/Feed";
 
 const App = createSwitchNavigator(
   {

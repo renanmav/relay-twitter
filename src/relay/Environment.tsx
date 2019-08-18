@@ -6,7 +6,8 @@ import {
   Variables,
   CacheConfig,
   RequestParameters,
-  LegacyObserver
+  LegacyObserver,
+  commitLocalUpdate
 } from "relay-runtime";
 
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -65,6 +66,27 @@ const store = new Store(source);
 const env = new Environment({
   network,
   store
+});
+
+commitLocalUpdate(env, proxyStore => {
+  const fieldKey = "settings";
+  const __typename = "Settings";
+
+  const dataID = `client:${__typename}`;
+  const record = proxyStore.create(dataID, __typename);
+
+  record.setValue("dark", "theme");
+
+  // avoid garbage collection
+  env.retain({
+    dataID,
+    variables: {},
+    // @ts-ignore
+    node: { selections: [] }
+  });
+
+  const root = proxyStore.getRoot();
+  root.setLinkedRecord(record, fieldKey);
 });
 
 export default env;

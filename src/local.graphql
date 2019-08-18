@@ -1,0 +1,7 @@
+type Settings {
+  theme: String!
+}
+
+extend type Query {
+  settings: Settings!
+}
