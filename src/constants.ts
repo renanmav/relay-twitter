@@ -6,3 +6,4 @@ export const GRAPHQL_SUBSCRIPTION_IOS_ENDPOINT =
   "ws://172.16.10.144:5000/subscriptions";
 export const GRAPHQL_SUBSCRIPTION_ANDROID_ENDPOINT =
   "ws://10.0.3.2:5000/subscriptions";
+export const TT_THEME = "TT_THEME";

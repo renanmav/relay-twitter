@@ -1,20 +1,26 @@
 import React from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-community/async-storage";
+import { useTheme } from "react-navigation";
 
 import { colors } from "../../styles";
 import { Container } from "./styles";
 import { commitLocalUpdate } from "react-relay";
 import env from "../../relay/Environment";
-import { useTheme } from "react-navigation";
+import { TT_THEME } from "../../constants";
 
 const ChangeThemeButton = () => {
   const handleChangeTheme = () => {
-    commitLocalUpdate(env, store => {
+    commitLocalUpdate(env, async store => {
       const settings = store.getRoot().getLinkedRecord("settings");
       const currentTheme = settings!.getValue("theme");
-      currentTheme === "light"
-        ? settings!.setValue("dark", "theme")
-        : settings!.setValue("light", "theme");
+      if (currentTheme === "light") {
+        settings!.setValue("dark", "theme");
+        await AsyncStorage.setItem(TT_THEME, "dark");
+      } else {
+        settings!.setValue("light", "theme");
+        await AsyncStorage.setItem(TT_THEME, "light");
+      }
     });
   };
 
