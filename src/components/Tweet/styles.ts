@@ -25,13 +25,19 @@ export const Wrapper = styled.View`
   flex: 1;
 `;
 
-export const AuthorName = styled.Text`
+interface Theme {
+  color: "light" | "dark";
+}
+
+export const AuthorName = styled.Text<Theme>`
   font-weight: bold;
-  color: ${colors.black.string()};
+  color: ${({ color }) =>
+    color === "light" ? colors.black.string() : colors.white.string()};
 `;
 
-export const Content = styled.Text`
-  color: ${colors.black.string()};
+export const Content = styled.Text<Theme>`
+  color: ${({ color }) =>
+    color === "light" ? colors.black.string() : colors.white.string()};
 `;
 
 export const FeedbackWrapper = styled.View`

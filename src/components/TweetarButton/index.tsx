@@ -5,7 +5,7 @@ import { Container, Text } from "./styles";
 const TweetarButton = (props: TouchableOpacityProps) => {
   return (
     <Container {...props}>
-      <Text>Tweetar</Text>
+      <Text active={!props.disabled!}>Tweetar</Text>
     </Container>
   );
 };

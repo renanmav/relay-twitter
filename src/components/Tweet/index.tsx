@@ -18,6 +18,8 @@ import {
   TweetUpdateMutationResponse
 } from "./mutation/__generated__/TweetUpdateMutation.graphql";
 import TweetUpdateMutation from "./mutation/TweetUpdateMutation";
+import { useTheme } from "react-navigation";
+import { colors } from "../../styles";
 
 interface TweetProps {
   data: {
@@ -33,6 +35,8 @@ interface TweetProps {
 }
 
 export default function Tweet({ data }: TweetProps) {
+  const theme = useTheme();
+
   const handleTweetUpdate = (
     { like, retweet }: { like?: boolean; retweet?: boolean } = {
       like: false,
@@ -77,22 +81,26 @@ export default function Tweet({ data }: TweetProps) {
     <Container>
       <ProfilePic />
       <Wrapper>
-        <AuthorName>{data.author!.name}</AuthorName>
-        <Content>{data.content}</Content>
+        <AuthorName color={theme}>{data.author!.name}</AuthorName>
+        <Content color={theme}>{data.content}</Content>
         <FeedbackWrapper>
           <Feedback>
-            <Icon name="comment" size={22} />
+            <Icon name="comment" size={22} color={colors.regular.string()} />
           </Feedback>
           <Feedback onPress={() => handleTweetUpdate({ like: true })}>
-            <Icon name="heart" size={22} />
+            <Icon name="heart" size={22} color={colors.regular.string()} />
             <NumberOfFeedbacks>{data.likes}</NumberOfFeedbacks>
           </Feedback>
           <Feedback onPress={() => handleTweetUpdate({ retweet: true })}>
-            <Icon name="retweet" size={22} />
+            <Icon name="retweet" size={22} color={colors.regular.string()} />
             <NumberOfFeedbacks>{data.retweets}</NumberOfFeedbacks>
           </Feedback>
           <Feedback>
-            <Icon name="share-apple" size={22} />
+            <Icon
+              name="share-apple"
+              size={22}
+              color={colors.regular.string()}
+            />
           </Feedback>
         </FeedbackWrapper>
       </Wrapper>

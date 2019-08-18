@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from "react";
-import { Text, View } from "react-native";
+import { Text, View, ActivityIndicator } from "react-native";
 import { GraphQLTaggedNode, Variables } from "relay-runtime";
 import { QueryRenderer } from "react-relay";
 import hoistStatics from "hoist-non-react-statics";
@@ -40,7 +41,11 @@ export default function createQueryRenderer(
               return <FragmentComponent {...this.props} query={props} />;
             }
 
-            return <View />;
+            return (
+              <View style={{ marginTop: 20 }}>
+                <ActivityIndicator />
+              </View>
+            );
           }}
         />
       );

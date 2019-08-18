@@ -7,8 +7,13 @@ export const Container = styled.TouchableOpacity`
   border-radius: 15px;
 `;
 
-export const Text = styled.Text`
+interface TextProps {
+  active: boolean;
+}
+
+export const Text = styled.Text<TextProps>`
   font-weight: bold;
-  color: ${colors.white.string()};
+  color: ${({ active }) =>
+    active ? colors.white.string() : colors.white.fade(0.8).string()};
   padding: 5px 10px;
 `;

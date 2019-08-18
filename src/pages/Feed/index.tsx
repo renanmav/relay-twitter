@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar, FlatList } from "react-native";
-import { createStackNavigator, NavigationScreenProps } from "react-navigation";
+import {
+  createStackNavigator,
+  NavigationScreenProps,
+  useTheme,
+  ThemeColors
+} from "react-navigation";
 import SplashScreen from "react-native-splash-screen";
 import {
   graphql,
@@ -8,7 +13,6 @@ import {
   RelayPaginationProp
 } from "react-relay";
 
-import { colors } from "../../styles";
 import FabNewTweet from "../../components/FabNewTweet";
 import { Container } from "./styles";
 import NewTweet from "../NewTweet";
@@ -28,6 +32,9 @@ type FeedProps = RelayProps & NavigationScreenProps;
 
 const Feed = ({ navigation, query, relay }: FeedProps) => {
   const [refreshing, setRefreshing] = useState(false);
+
+  const theme = useTheme();
+  const themeColors = ThemeColors[theme];
 
   useEffect(() => {
     SplashScreen.hide();
@@ -53,8 +60,8 @@ const Feed = ({ navigation, query, relay }: FeedProps) => {
   return (
     <>
       <StatusBar
-        barStyle="dark-content"
-        backgroundColor={colors.white.string()}
+        barStyle={theme === "light" ? "dark-content" : "light-content"}
+        backgroundColor={themeColors.header}
       />
       <Container>
         <FlatList

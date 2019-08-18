@@ -1,15 +1,24 @@
 import React, { useState } from "react";
-import { Alert } from "react-native";
-import { NavigationScreenComponent, withNavigation } from "react-navigation";
+import { Alert, StatusBar } from "react-native";
+import {
+  NavigationScreenComponent,
+  withNavigation,
+  useTheme,
+  ThemeColors
+} from "react-navigation";
 
 import CancelarButton from "../../components/CancelarButton";
 import TweetarButton from "../../components/TweetarButton";
 import { Container, Buttons, TweetInput } from "./styles";
 import { TweetCreateMutationResponse } from "./mutation/__generated__/TweetCreateMutation.graphql";
 import TweetCreateMutation from "./mutation/TweetCreateMutation";
+import { colors } from "../../styles";
 
 const NewTweet: NavigationScreenComponent = ({ navigation }) => {
   const [content, setContent] = useState("");
+
+  const theme = useTheme();
+  const colorsTheme = ThemeColors[theme];
 
   const handleCreateTweet = () => {
     const input = {
@@ -35,19 +44,30 @@ const NewTweet: NavigationScreenComponent = ({ navigation }) => {
   };
 
   return (
-    <Container>
-      <Buttons>
-        <CancelarButton />
-        <TweetarButton disabled={!content.length} onPress={handleCreateTweet} />
-      </Buttons>
-      <TweetInput
-        value={content}
-        onChangeText={t => setContent(t)}
-        placeholder="O que está acontecendo?"
-        autoFocus
-        multiline
+    <>
+      <StatusBar
+        barStyle={theme === "light" ? "dark-content" : "light-content"}
+        backgroundColor={colorsTheme.body}
       />
-    </Container>
+      <Container>
+        <Buttons>
+          <CancelarButton />
+          <TweetarButton
+            disabled={!content.length}
+            onPress={handleCreateTweet}
+          />
+        </Buttons>
+        <TweetInput
+          value={content}
+          onChangeText={t => setContent(t)}
+          placeholder="O que está acontecendo?"
+          placeholderTextColor={colors.regular.string()}
+          theme={theme}
+          autoFocus
+          multiline
+        />
+      </Container>
+    </>
   );
 };
 

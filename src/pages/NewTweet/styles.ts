@@ -1,8 +1,9 @@
 import styled from "styled-components/native";
-import { getStatusBarHeight } from "react-native-iphone-x-helper";
+import { ifIphoneX, getStatusBarHeight } from "react-native-iphone-x-helper";
+import { colors } from "../../styles";
 
 export const Container = styled.View`
-  margin-top: ${getStatusBarHeight()}px;
+  margin-top: ${ifIphoneX(getStatusBarHeight(), 0)}px;
 `;
 
 export const Buttons = styled.View`
@@ -12,7 +13,13 @@ export const Buttons = styled.View`
   margin: 15px;
 `;
 
-export const TweetInput = styled.TextInput`
+interface Theme {
+  theme: "light" | "dark";
+}
+
+export const TweetInput = styled.TextInput<Theme>`
   margin: 0px 15px;
   font-size: 16px;
+  color: ${({ theme }) =>
+    theme === "light" ? colors.black.string() : colors.white.string()};
 `;
