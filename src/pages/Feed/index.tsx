@@ -2,22 +2,22 @@ import React, { useEffect, useState } from "react";
 import { StatusBar, FlatList } from "react-native";
 import { createStackNavigator, NavigationScreenProps } from "react-navigation";
 import SplashScreen from "react-native-splash-screen";
+import {
+  graphql,
+  createPaginationContainer,
+  RelayPaginationProp
+} from "react-relay";
 
 import { colors } from "../../styles";
 import FabNewTweet from "../../components/FabNewTweet";
 import { Container } from "./styles";
 import NewTweet from "../NewTweet";
 import Tweet from "../../components/Tweet";
-
-import {
-  graphql,
-  createPaginationContainer,
-  RelayPaginationProp
-} from "react-relay";
 import { createQueryRendererModern } from "../../relay";
 import { Feed_query } from "./__generated__/Feed_query.graphql";
 import { TT_ITEMS_PER_PAGE } from "../../constants";
 import NewTweetSubscription from "./subscription/NewTweetSubscription";
+import ChangeThemeButton from "../../components/ChangeThemeButton";
 
 interface RelayProps {
   query: Feed_query;
@@ -72,7 +72,8 @@ const Feed = ({ navigation, query, relay }: FeedProps) => {
 };
 
 Feed.navigationOptions = {
-  title: "Início"
+  title: "Início",
+  headerRight: <ChangeThemeButton />
 };
 
 const FeedPaginationContainer = createPaginationContainer(

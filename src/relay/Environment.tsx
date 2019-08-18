@@ -75,7 +75,7 @@ commitLocalUpdate(env, proxyStore => {
   const dataID = `client:${__typename}`;
   const record = proxyStore.create(dataID, __typename);
 
-  record.setValue("dark", "theme");
+  record.setValue("light", "theme");
 
   // avoid garbage collection
   env.retain({
