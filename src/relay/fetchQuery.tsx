@@ -12,7 +12,8 @@ import {
 
 export const GRAPHQL_URL = Platform.select({
   android: GRAPHQL_ANDROID_ENDPOINT,
-  ios: GRAPHQL_IOS_ENDPOINT
+  ios: GRAPHQL_IOS_ENDPOINT,
+  default: GRAPHQL_IOS_ENDPOINT
 });
 
 const fetchQuery = async (
