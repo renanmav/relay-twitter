@@ -12,9 +12,6 @@ import {
 
 import { SubscriptionClient } from "subscriptions-transport-ws";
 
-// TODO - Add types to @ts-ignore flaged packages
-// @ts-ignore
-import RelayNetworkLogger from "relay-runtime/lib/RelayNetworkLogger";
 // @ts-ignore
 import { installRelayDevTools } from "relay-devtools";
 
@@ -55,10 +52,7 @@ const setupSubscription = (
   );
 };
 
-const network = Network.create(
-  __DEV__ ? RelayNetworkLogger.wrapFetch(cacheHandler) : cacheHandler,
-  setupSubscription
-);
+const network = Network.create(cacheHandler, setupSubscription);
 
 const source = new RecordSource();
 const store = new Store(source);
