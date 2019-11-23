@@ -9,7 +9,7 @@ import {
 import { NavigationScreenProp } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
 
-import { TT_THEME } from "../constants";
+import { TT_THEME } from "../../constants";
 
 interface Props {
   navigation: NavigationScreenProp<{}>;
@@ -33,9 +33,9 @@ export default function Me(props: Props) {
   );
 
   const verifyUserLoggedIn = useCallback(() => {
-    // if (me) return props.navigation.navigate("FeedNavigator");
+    if (me) return props.navigation.navigate("FeedNavigator");
     return props.navigation.navigate("UserLogin");
-  }, [props.navigation]);
+  }, [me, props.navigation]);
 
   const verifyTheme = useCallback(async () => {
     try {

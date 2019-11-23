@@ -9,7 +9,7 @@ import {
 import { NavigationScreenProp } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
 
-import { colors } from "../styles";
+import { colors } from "../../styles";
 import {
   Container,
   Content,
@@ -18,7 +18,7 @@ import {
   Button,
   ButtonText
 } from "./UserLogin";
-import { TT_TOKEN } from "../constants";
+import { TT_TOKEN } from "../../constants";
 import UserRegisterWithEmailMutation from "./mutation/UserRegisterWithEmailMutation";
 import { UserRegisterWithEmailMutationResponse } from "./mutation/__generated__/UserRegisterWithEmailMutation.graphql";
 

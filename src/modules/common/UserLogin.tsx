@@ -13,9 +13,9 @@ import {
   Alert
 } from "react-native";
 
-import { colors } from "../styles";
+import { colors } from "../../styles";
 import logo from "../assets/img/logo.png";
-import { TT_TOKEN } from "../constants";
+import { TT_TOKEN } from "../../constants";
 
 import UserLoginWithEmailMutation from "./mutation/UserLoginWithEmailMutation";
 import { UserLoginWithEmailMutationResponse } from "./mutation/__generated__/UserLoginWithEmailMutation.graphql";

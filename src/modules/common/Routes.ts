@@ -3,7 +3,7 @@ import { createSwitchNavigator, createAppContainer } from "react-navigation";
 import Me from "./Me";
 import UserLogin from "./UserLogin";
 import UserRegister from "./UserRegister";
-import FeedNavigator from "./feed/FeedNavigator";
+import FeedNavigator from "../feed/FeedNavigator";
 
 const App = createSwitchNavigator(
   {

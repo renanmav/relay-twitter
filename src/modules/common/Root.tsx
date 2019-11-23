@@ -3,7 +3,7 @@ import { RelayEnvironmentProvider } from "react-relay/hooks";
 
 import App from "./App";
 
-import environment from "../relay/Environment";
+import environment from "../../relay/Environment";
 
 export default function Root() {
   return (
