@@ -11,5 +11,6 @@
     "strict": true,
     "target": "esnext",
   },
+  "include": ["src/*ts", "src/**/*ts", "src/*tsx", "src/**/*tsx", "./@types", "*"],
   "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
 }

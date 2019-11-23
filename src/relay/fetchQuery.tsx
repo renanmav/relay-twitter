@@ -1,4 +1,4 @@
-import { RequestParameters, Variables, UploadableMap } from "relay-runtime";
+import { FetchFunction } from "relay-runtime";
 import { getRequestBody, getHeaders, handleData, isMutation } from "./helpers";
 import AsyncStorage from "@react-native-community/async-storage";
 import { Platform } from "react-native";
@@ -16,17 +16,18 @@ export const GRAPHQL_URL = Platform.select({
   default: GRAPHQL_IOS_ENDPOINT
 });
 
-const fetchQuery = async (
-  request: RequestParameters,
-  variables: Variables,
-  uploadables: UploadableMap
+const fetchQuery: FetchFunction = async (
+  request,
+  variables,
+  _cacheConfig,
+  uploadables
 ) => {
   try {
     const token = await AsyncStorage.getItem(TT_TOKEN);
 
-    const body = getRequestBody(request, variables, uploadables);
+    const body = getRequestBody(request, variables, uploadables!);
     const headers = {
-      ...getHeaders(uploadables),
+      ...getHeaders(uploadables!),
       Authorization: token
     };
 

@@ -3,11 +3,8 @@ import {
   Network,
   RecordSource,
   Store,
-  Variables,
-  CacheConfig,
-  RequestParameters,
-  LegacyObserver,
-  commitLocalUpdate
+  commitLocalUpdate,
+  SubscribeFunction
 } from "relay-runtime";
 
 import { SubscriptionClient } from "subscriptions-transport-ws";
@@ -15,22 +12,22 @@ import { SubscriptionClient } from "subscriptions-transport-ws";
 // @ts-ignore
 import { installRelayDevTools } from "relay-devtools";
 
-import cacheHandler from "./cacheHandler";
 import {
   GRAPHQL_SUBSCRIPTION_ANDROID_ENDPOINT,
   GRAPHQL_SUBSCRIPTION_IOS_ENDPOINT
 } from "../constants";
 import { Platform } from "react-native";
+import fetchQuery from "./fetchQuery";
 
 if (__DEV__) {
   installRelayDevTools();
 }
 
-const setupSubscription = (
-  request: RequestParameters,
-  variables: Variables,
-  __: CacheConfig,
-  observer?: LegacyObserver<any>
+const setupSubscription: SubscribeFunction = (
+  request,
+  variables,
+  __,
+  observer
 ) => {
   const query = request.text;
 
@@ -46,13 +43,13 @@ const setupSubscription = (
 
   return (
     subscriptionClient
-      .request({ query, variables })
+      .request({ query: query!, variables })
       // @ts-ignore
       .subscribe(({ data }) => observer.onNext({ data }))
   );
 };
 
-const network = Network.create(cacheHandler, setupSubscription);
+const network = Network.create(fetchQuery, setupSubscription);
 
 const source = new RecordSource();
 const store = new Store(source);
