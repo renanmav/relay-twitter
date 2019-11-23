@@ -8,6 +8,7 @@ An twitter clone basic features built with React Native, Relay Modern and GraphQ
 - Realtime updates with GraphQL Subscriptions.
 - Dark theme with local management store of Relay.
 - UI optimistic updates.
+- Relay hooks. (You can see the project with [HOCs](https://github.com/renanmav/relay-twitter/tree/feat/hoc) too)
 
 ![screenshots](./preview/relay-twitter.png)
 
