@@ -5,7 +5,7 @@
   "scripts": {
     "android": "concurrently \"yarn re:watch\" \"react-native run-android\"",
     "ios": "concurrently \"yarn re:watch\" \"react-native run-ios\"",
-    "lint": "eslint --fix --ext .js,jsx,re",
+    "lint": "eslint --fix --ext .js,jsx",
     "re:build": "bsb -clean-world -make-world",
     "re:clean": "bsb -clean-world",
     "re:watch": "bsb -clean-world -make-world -w",
@@ -19,7 +19,10 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "*.re": [
+      "bsrefmt --in-place"
+    ],
+    "*.{js,jsx}": [
       "yarn prettier --write",
       "yarn lint"
     ],
