@@ -15,5 +15,12 @@
       "subdirs": true
     }
   ],
-  "bs-dependencies": ["reason-react", "reason-react-native"]
+  "ppx-flags": ["reason-relay/ppx"],
+  "bs-dependencies": [
+    "reason-react",
+    "reason-react-native",
+    "reason-relay",
+    "reason-promise",
+    "bs-fetch"
+  ]
 }
