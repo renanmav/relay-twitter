@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "concurrently \"yarn re:watch\" \"react-native run-android\"",
-    "ios": "concurrently \"yarn re:watch\" \"react-native run-ios\"",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "lint": "eslint --fix --ext .js,jsx",
     "re:build": "bsb -clean-world -make-world",
     "re:clean": "bsb -clean-world",
     "re:watch": "bsb -clean-world -make-world -w",
-    "start": "concurrently \"yarn re:watch\" \"react-native start\"",
+    "relay": "reason-relay-compiler",
+    "relay:watch": "reason-relay-compiler --watch",
+    "start": "react-native start",
     "test": "jest"
   },
   "husky": {
@@ -41,10 +43,19 @@
     ]
   },
   "dependencies": {
-    "react": "^16.9.0",
+    "bs-fetch": "^0.5.2",
+    "graphql": "^15.0.0",
+    "react": "^0.0.0-experimental-33c3af284",
+    "react-dom": "^0.0.0-experimental-33c3af284",
     "react-native": "^0.61.0",
+    "react-relay": "0.0.0-experimental-8cc94ddc",
+    "reason-promise": "^1.0.2",
     "reason-react": "^0.7.0",
-    "reason-react-native": "^0.61.0"
+    "reason-react-native": "^0.61.0",
+    "reason-relay": "^0.8.3",
+    "relay-compiler": "9.0.0",
+    "relay-config": "9.0.0",
+    "relay-runtime": "9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
@@ -52,7 +63,6 @@
     "@react-native-community/eslint-config": "^0.0.5",
     "babel-jest": "^24.9.0",
     "bs-platform": "^7.0.0",
-    "concurrently": "^5.2.0",
     "eslint": "^6.5.1",
     "husky": "^4.2.5",
     "jest": "^24.9.0",

@@ -64,3 +64,5 @@ buck-out/
 .merlin
 lib/bs
 lib/ocaml
+
+__generated__
