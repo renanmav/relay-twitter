@@ -1,5 +1,3 @@
-open ReactNative;
-
 module Query = [%relay.query
   {|
     query AppQuery {
@@ -9,6 +7,4 @@ module Query = [%relay.query
 ];
 
 [@react.component]
-let make = () => {
-  <SafeAreaView> <Text> "App component"->React.string </Text> </SafeAreaView>;
-};
+let make = () => <Router />;
