@@ -5,9 +5,14 @@ include Stack.Make({
 });
 
 [@react.component]
-let make = () =>
+let make = () => {
   <Native.NavigationContainer>
     <Navigator initialRouteName="Test">
-      <Screen name="Test" component=Test.make />
+      <Screen
+        name="UserLogin"
+        component=UserLogin.make
+        options={_ => options(~headerShown=false, ())}
+      />
     </Navigator>
   </Native.NavigationContainer>;
+};
