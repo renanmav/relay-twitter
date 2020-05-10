@@ -1,4 +1,11 @@
 open ReactNative;
+open ReactNavigation;
+
+module StackParams = {
+  type params =
+    | None;
+};
+include Stack.Make(StackParams);
 
 module UserEmailWithEmailMutation = [%relay.mutation
   {|
@@ -98,6 +105,10 @@ let make = (~navigation, ~route) => {
     ();
   };
 
+  let handleRegister = _ => {
+    navigation->Navigation.navigate("UserRegister");
+  };
+
   <>
     <StatusBar barStyle=`darkContent backgroundColor="#fff" />
     <TouchableWithoutFeedback onPress={_ => Keyboard.dismiss()}>
@@ -148,7 +159,7 @@ let make = (~navigation, ~route) => {
                  "Entrar"->React.string
                </Text>}
         </TouchableOpacity>
-        <TouchableOpacity style=styles##button>
+        <TouchableOpacity style=styles##button onPress=handleRegister>
           <Text style=styles##buttonText> "Registrar"->React.string </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>

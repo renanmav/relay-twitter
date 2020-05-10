@@ -13,6 +13,11 @@ let make = () => {
         component=UserLogin.make
         options={_ => options(~headerShown=false, ())}
       />
+      <Screen
+        name="UserRegister"
+        component=UserRegister.make
+        options={_ => options(~headerShown=false, ())}
+      />
     </Navigator>
   </Native.NavigationContainer>;
 };
