@@ -1,5 +1,16 @@
 open ReactNative;
 
+module UserEmailWithEmailMutation = [%relay.mutation
+  {|
+  mutation UserLoginWithEmailMutation($input: UserLoginWithEmailInput!) {
+    userLoginWithEmail: UserLoginWithEmail(input: $input) {
+      token
+      error
+    }
+  }
+|}
+];
+
 let logo =
   Image.Source.fromRequired(Packager.require("../../assets/img/logo.png"));
 
@@ -53,12 +64,39 @@ let styles =
 
 external elementToObj: TextInput.element => Js.t({..}) = "%identity";
 
+[@bs.val] external setTimeout: (unit => unit, int) => unit = "setTimeout";
+
 [@react.component]
 let make = (~navigation, ~route) => {
   let (email, setEmail) = React.useState(() => "");
   let (password, setPassword) = React.useState(() => "");
+  let (loading, setLoading) = React.useState(() => false);
 
   let secondInputRef = React.useRef(Js.Nullable.null);
+
+  let (mutate, _) = UserEmailWithEmailMutation.use();
+
+  let handleLogin = _ => {
+    setLoading(_ => true);
+
+    mutate(
+      ~variables={
+        input: {
+          clientMutationId: None,
+          email,
+          password,
+        },
+      },
+      ~onCompleted=
+        (data, _) => {
+          setLoading(_ => false);
+          Js.log(data);
+        },
+      (),
+    );
+
+    ();
+  };
 
   <>
     <StatusBar barStyle=`darkContent backgroundColor="#fff" />
@@ -91,17 +129,24 @@ let make = (~navigation, ~route) => {
           value=password
           onChangeText={p => setPassword(_ => p)}
           autoCapitalize=`none
+          onSubmitEditing=handleLogin
           style=styles##input
         />
         <TouchableOpacity
-          style={StyleSheet.flatten([|styles##button, styles##colorful|])}>
-          <Text
-            style={StyleSheet.flatten([|
-              styles##buttonText,
-              styles##colorful,
-            |])}>
-            "Entrar"->React.string
-          </Text>
+          style={StyleSheet.flatten([|styles##button, styles##colorful|])}
+          onPress=handleLogin>
+          {loading
+             ? <ActivityIndicator
+                 size={ActivityIndicator_Size.exact(18.0)}
+                 color="#fff"
+               />
+             : <Text
+                 style={StyleSheet.flatten([|
+                   styles##buttonText,
+                   styles##colorful,
+                 |])}>
+                 "Entrar"->React.string
+               </Text>}
         </TouchableOpacity>
         <TouchableOpacity style=styles##button>
           <Text style=styles##buttonText> "Registrar"->React.string </Text>
