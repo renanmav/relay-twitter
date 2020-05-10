@@ -1,5 +1,8 @@
 open ReactNative;
 
+let logo =
+  Image.Source.fromRequired(Packager.require("../../assets/img/logo.png"));
+
 let styles =
   Style.(
     StyleSheet.create({
@@ -9,6 +12,13 @@ let styles =
           ~justifyContent=`center,
           ~alignItems=`center,
           ~marginHorizontal=40.0->dp,
+          (),
+        ),
+      "logo":
+        viewStyle(
+          ~width=64.0->dp,
+          ~height=64.0->dp,
+          ~marginBottom=30.0->dp,
           (),
         ),
       "input":
@@ -22,6 +32,22 @@ let styles =
           ~color="#222",
           (),
         ),
+      "button":
+        viewStyle(
+          ~borderWidth=1.0,
+          ~borderColor="#1EA1F3",
+          ~borderRadius=20.0,
+          ~paddingHorizontal=20.0->dp,
+          ~paddingVertical=10.0->dp,
+          ~width=100.0->pct,
+          ~alignItems=`center,
+          ~justifyContent=`center,
+          ~marginTop=20.0->dp,
+          ~height=42.0->dp,
+          (),
+        ),
+      "buttonText": textStyle(~fontWeight=`bold, ~color="#1EA1F3", ()),
+      "colorful": style(~backgroundColor="#1EA1F3", ~color="#fff", ()),
     })
   );
 
@@ -38,6 +64,7 @@ let make = (~navigation, ~route) => {
     <StatusBar barStyle=`darkContent backgroundColor="#fff" />
     <TouchableWithoutFeedback onPress={_ => Keyboard.dismiss()}>
       <KeyboardAvoidingView behavior=`padding style=styles##content>
+        <Image source=logo resizeMode=`contain style=styles##logo />
         <TextInput
           autoCorrect=false
           placeholderTextColor="#999"
@@ -66,6 +93,19 @@ let make = (~navigation, ~route) => {
           autoCapitalize=`none
           style=styles##input
         />
+        <TouchableOpacity
+          style={StyleSheet.flatten([|styles##button, styles##colorful|])}>
+          <Text
+            style={StyleSheet.flatten([|
+              styles##buttonText,
+              styles##colorful,
+            |])}>
+            "Login"->React.string
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style=styles##button>
+          <Text style=styles##buttonText> "Register"->React.string </Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   </>;

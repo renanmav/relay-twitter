@@ -7,7 +7,7 @@ include Stack.Make({
 [@react.component]
 let make = () => {
   <Native.NavigationContainer>
-    <Navigator initialRouteName="Test">
+    <Navigator initialRouteName="UserLogin">
       <Screen
         name="UserLogin"
         component=UserLogin.make
