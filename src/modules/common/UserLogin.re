@@ -100,11 +100,11 @@ let make = (~navigation, ~route) => {
               styles##buttonText,
               styles##colorful,
             |])}>
-            "Login"->React.string
+            "Entrar"->React.string
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style=styles##button>
-          <Text style=styles##buttonText> "Register"->React.string </Text>
+          <Text style=styles##buttonText> "Registrar"->React.string </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
