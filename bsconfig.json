@@ -21,6 +21,7 @@
     "reason-react-native",
     "reason-relay",
     "reason-promise",
-    "bs-fetch"
+    "bs-fetch",
+    "reason-react-navigation"
   ]
 }
