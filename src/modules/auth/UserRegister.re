@@ -7,15 +7,15 @@ module StackParams = {
 };
 include Stack.Make(StackParams);
 
-module UserEmailWithEmailMutation = [%relay.mutation
+module UserRegisterWithEmailMutation = [%relay.mutation
   {|
-  mutation UserLoginWithEmailMutation($input: UserLoginWithEmailInput!) {
-    userLoginWithEmail: UserLoginWithEmail(input: $input) {
-      token
-      error
+    mutation UserRegisterWithEmailMutation($input: UserRegisterWithEmailInput!) {
+      userRegisterWithEmail: UserRegisterWithEmail(input: $input) {
+        token
+        error
+      }
     }
-  }
-|}
+  |}
 ];
 
 let logo =
@@ -71,43 +71,41 @@ let styles =
 
 external elementToObj: TextInput.element => Js.t({..}) = "%identity";
 
-[@bs.val] external setTimeout: (unit => unit, int) => unit = "setTimeout";
-
 [@react.component]
 let make = (~navigation, ~route) => {
+  let (name, setName) = React.useState(() => "");
   let (email, setEmail) = React.useState(() => "");
   let (password, setPassword) = React.useState(() => "");
   let (loading, setLoading) = React.useState(() => false);
 
   let secondInputRef = React.useRef(Js.Nullable.null);
+  let thirdInputRef = React.useRef(Js.Nullable.null);
 
-  let (mutate, _) = UserEmailWithEmailMutation.use();
+  let (mutate, _) = UserRegisterWithEmailMutation.use();
 
-  let handleLogin = _ => {
-    setLoading(_ => true);
+  let handleRegister = _ =>
+    if (!loading) {
+      setLoading(_ => true);
 
-    mutate(
-      ~variables={
-        input: {
-          clientMutationId: None,
-          email,
-          password,
+      mutate(
+        ~variables={
+          input: {
+            clientMutationId: None,
+            email,
+            password,
+            name,
+          },
         },
-      },
-      ~onCompleted=
-        (data, _) => {
-          setLoading(_ => false);
-          Js.log(data);
-        },
-      (),
-    );
+        ~onCompleted=
+          (data, _) => {
+            setLoading(_ => false);
+            Js.log(data);
+          },
+        (),
+      );
 
-    ();
-  };
-
-  let handleRegister = _ => {
-    navigation->Navigation.navigate("UserRegister");
-  };
+      ();
+    };
 
   <>
     <StatusBar barStyle=`darkContent backgroundColor="#fff" />
@@ -117,6 +115,23 @@ let make = (~navigation, ~route) => {
         <TextInput
           autoCorrect=false
           placeholderTextColor="#999"
+          style=styles##input
+          placeholder="Nome"
+          returnKeyType=`next
+          autoCapitalize=`words
+          value=name
+          onChangeText={e => setName(_ => e)}
+          onSubmitEditing={_ =>
+            switch (Js.Nullable.toOption(React.Ref.current(secondInputRef))) {
+            | Some(ref) => ref->elementToObj##focus()
+            }
+          }
+        />
+        <TextInput
+          ref=secondInputRef
+          autoCorrect=false
+          placeholderTextColor="#999"
+          style=styles##input
           keyboardType=`emailAddress
           placeholder="E-mail"
           returnKeyType=`next
@@ -124,28 +139,27 @@ let make = (~navigation, ~route) => {
           value=email
           onChangeText={e => setEmail(_ => e)}
           onSubmitEditing={_ =>
-            switch (Js.Nullable.toOption(React.Ref.current(secondInputRef))) {
-            | None => ()
+            switch (Js.Nullable.toOption(React.Ref.current(thirdInputRef))) {
             | Some(ref) => ref->elementToObj##focus()
             }
           }
-          style=styles##input
         />
         <TextInput
-          ref=secondInputRef
+          ref=thirdInputRef
+          autoCorrect=false
           secureTextEntry=true
           placeholderTextColor="#999"
           placeholder="Senha"
-          returnKeyType=`send
-          value=password
-          onChangeText={p => setPassword(_ => p)}
-          autoCapitalize=`none
-          onSubmitEditing=handleLogin
           style=styles##input
+          returnKeyType=`send
+          autoCapitalize=`none
+          value=password
+          onChangeText={e => setPassword(_ => e)}
+          onSubmitEditing=handleRegister
         />
         <TouchableOpacity
           style={StyleSheet.flatten([|styles##button, styles##colorful|])}
-          onPress=handleLogin>
+          onPress=handleRegister>
           {loading
              ? <ActivityIndicator
                  size={ActivityIndicator_Size.exact(18.0)}
@@ -156,11 +170,12 @@ let make = (~navigation, ~route) => {
                    styles##buttonText,
                    styles##colorful,
                  |])}>
-                 "Entrar"->React.string
+                 "Registrar"->React.string
                </Text>}
         </TouchableOpacity>
-        <TouchableOpacity style=styles##button onPress=handleRegister>
-          <Text style=styles##buttonText> "Registrar"->React.string </Text>
+        <TouchableOpacity
+          style=styles##button onPress={_ => navigation->Navigation.goBack()}>
+          <Text style=styles##buttonText> "Voltar"->React.string </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
