@@ -99,12 +99,12 @@ let make = (~navigation, ~route) => {
         ~onCompleted=
           (data, _) => {
             setLoading(_ => false);
+
             Js.log(data);
           },
         (),
-      );
-
-      ();
+      )
+      |> ignore;
     };
 
   <>
@@ -124,6 +124,7 @@ let make = (~navigation, ~route) => {
           onSubmitEditing={_ =>
             switch (Js.Nullable.toOption(React.Ref.current(secondInputRef))) {
             | Some(ref) => ref->elementToObj##focus()
+            | None => ()
             }
           }
         />
@@ -141,6 +142,7 @@ let make = (~navigation, ~route) => {
           onSubmitEditing={_ =>
             switch (Js.Nullable.toOption(React.Ref.current(thirdInputRef))) {
             | Some(ref) => ref->elementToObj##focus()
+            | None => ()
             }
           }
         />

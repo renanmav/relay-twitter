@@ -1,5 +1,6 @@
 open ReactNative;
 open ReactNavigation;
+open UserLoginWithEmailMutation_graphql.Types;
 
 module StackParams = {
   type params =
@@ -96,12 +97,37 @@ let make = (~navigation, ~route) => {
         ~onCompleted=
           (data, _) => {
             setLoading(_ => false);
-            Js.log(data);
+
+            (
+              switch (data) {
+              | response =>
+                switch (response.userLoginWithEmail) {
+                | Some(userLoginWithEmail) =>
+                  switch (userLoginWithEmail.error) {
+                  | None =>
+                    switch (userLoginWithEmail.token) {
+                    | Some(token) =>
+                      AsyncStorage.setItem("token", token) |> ignore;
+                      navigation->Navigation.navigate("FeedNavigator");
+                    | None =>
+                      Alert.alert(
+                        ~title="Erro no login",
+                        ~message="Estamos com problemas no nosso servidor",
+                        (),
+                      )
+                    }
+                  | Some(error) =>
+                    Alert.alert(~title="Erro no login", ~message=error, ())
+                  }
+                | None => ()
+                }
+              }
+            )
+            |> ignore;
           },
         (),
-      );
-
-      ();
+      )
+      |> ignore;
     };
 
   let handleRegister = _ => {
@@ -125,6 +151,7 @@ let make = (~navigation, ~route) => {
           onSubmitEditing={_ =>
             switch (Js.Nullable.toOption(React.Ref.current(secondInputRef))) {
             | Some(ref) => ref->elementToObj##focus()
+            | None => ()
             }
           }
           style=styles##input

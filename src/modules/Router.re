@@ -7,7 +7,9 @@ include Stack.Make({
 [@react.component]
 let make = () => {
   <Native.NavigationContainer>
-    <Navigator initialRouteName="UserLogin">
+    <Navigator
+      initialRouteName="UserLogin"
+      screenOptions={_ => options(~gestureEnabled=false, ())}>
       <Screen
         name="UserLogin"
         component=UserLogin.make
@@ -16,6 +18,11 @@ let make = () => {
       <Screen
         name="UserRegister"
         component=UserRegister.make
+        options={_ => options(~headerShown=false, ())}
+      />
+      <Screen
+        name="FeedNavigator"
+        component=FeedNavigator.make
         options={_ => options(~headerShown=false, ())}
       />
     </Navigator>
