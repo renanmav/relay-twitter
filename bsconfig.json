@@ -22,6 +22,7 @@
     "reason-relay",
     "reason-promise",
     "bs-fetch",
-    "reason-react-navigation"
+    "reason-react-navigation",
+    "@reason-react-native/async-storage"
   ]
 }

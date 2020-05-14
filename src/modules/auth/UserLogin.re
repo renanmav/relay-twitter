@@ -100,26 +100,20 @@ let make = (~navigation, ~route) => {
 
             (
               switch (data) {
-              | response =>
-                switch (response.userLoginWithEmail) {
-                | Some(userLoginWithEmail) =>
-                  switch (userLoginWithEmail.error) {
-                  | None =>
-                    switch (userLoginWithEmail.token) {
-                    | Some(token) =>
-                      AsyncStorage.setItem("token", token) |> ignore;
-                      navigation->Navigation.navigate("FeedNavigator");
-                    | None =>
-                      Alert.alert(
-                        ~title="Erro no login",
-                        ~message="Estamos com problemas no nosso servidor",
-                        (),
-                      )
-                    }
-                  | Some(error) =>
-                    Alert.alert(~title="Erro no login", ~message=error, ())
-                  }
-                | None => ()
+              | {userLoginWithEmail: None} => ()
+              | {userLoginWithEmail: Some({error: Some(error)})} =>
+                Alert.alert(~title="Erro no login", ~message=error, ())
+              | {userLoginWithEmail: Some(userLoginWithEmail)} =>
+                switch (userLoginWithEmail.token) {
+                | Some(token) =>
+                  ReactNativeAsyncStorage.setItem("token", token) |> ignore;
+                  navigation->Navigation.navigate("FeedNavigator");
+                | None =>
+                  Alert.alert(
+                    ~title="Erro no login",
+                    ~message="Estamos com problemas no nosso servidor",
+                    (),
+                  )
                 }
               }
             )
