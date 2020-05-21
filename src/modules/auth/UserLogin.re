@@ -1,23 +1,11 @@
 open ReactNative;
 open ReactNavigation;
-open UserLoginWithEmailMutation_graphql.Types;
 
 module StackParams = {
   type params =
     | None;
 };
 include Stack.Make(StackParams);
-
-module UserEmailWithEmailMutation = [%relay.mutation
-  {|
-    mutation UserLoginWithEmailMutation($input: UserLoginWithEmailInput!) {
-      userLoginWithEmail: UserLoginWithEmail(input: $input) {
-        token
-        error
-      }
-    }
-  |}
-];
 
 let logo =
   Image.Source.fromRequired(Packager.require("../../assets/img/logo.png"));
@@ -80,49 +68,18 @@ let make = (~navigation, ~route) => {
 
   let secondInputRef = React.useRef(Js.Nullable.null);
 
-  let (mutate, _) = UserEmailWithEmailMutation.use();
+  let environment = ReasonRelay.useEnvironmentFromContext();
 
-  let handleLogin = _ =>
-    if (!loading) {
-      setLoading(_ => true);
-
-      mutate(
-        ~variables={
-          input: {
-            clientMutationId: None,
-            email,
-            password,
-          },
-        },
-        ~onCompleted=
-          (data, _) => {
-            setLoading(_ => false);
-
-            (
-              switch (data) {
-              | {userLoginWithEmail: None} => ()
-              | {userLoginWithEmail: Some({error: Some(error)})} =>
-                Alert.alert(~title="Erro no login", ~message=error, ())
-              | {userLoginWithEmail: Some(userLoginWithEmail)} =>
-                switch (userLoginWithEmail.token) {
-                | Some(token) =>
-                  ReactNativeAsyncStorage.setItem("token", token) |> ignore;
-                  navigation->Navigation.navigate("FeedNavigator");
-                | None =>
-                  Alert.alert(
-                    ~title="Erro no login",
-                    ~message="Estamos com problemas no nosso servidor",
-                    (),
-                  )
-                }
-              }
-            )
-            |> ignore;
-          },
-        (),
-      )
-      |> ignore;
-    };
+  let handleLogin = _ => {
+    UserLoginWithEmailMutation.commit(
+      ~environment,
+      ~setLoading,
+      ~email,
+      ~password,
+      ~navigation,
+    )
+    |> ignore;
+  };
 
   let handleRegister = _ => {
     navigation->Navigation.navigate("UserRegister");
