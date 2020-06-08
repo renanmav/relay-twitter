@@ -6,12 +6,11 @@ There are versions built in Typescript on `ts/hoc` and `ts/hooks` branches
 
 # Main Features
 
-- Login (and persistence) with JWT authentication.
-- Realtime updates with GraphQL Subscriptions.
-- Dark theme with local management store of Relay.
-- UI optimistic updates.
-- Relay hooks. (You can see the project with [HOCs](https://github.com/renanmav/relay-twitter/tree/feat/hoc) too)
-- Reason
+- Login (and persistence) with JWT authentication
+- Realtime updates with GraphQL Subscriptions
+- Dark theme with local management store of Relay
+- UI optimistic updates
+- Relay hooks
 
 ![screenshots](./preview/relay-twitter.png)
 
