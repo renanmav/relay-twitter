@@ -7,17 +7,6 @@ module StackParams = {
 };
 include Stack.Make(StackParams);
 
-module UserEmailWithEmailMutation = [%relay.mutation
-  {|
-    mutation UserLoginWithEmailMutation($input: UserLoginWithEmailInput!) {
-      userLoginWithEmail: UserLoginWithEmail(input: $input) {
-        token
-        error
-      }
-    }
-  |}
-];
-
 let logo =
   Image.Source.fromRequired(Packager.require("../../assets/img/logo.png"));
 
@@ -79,30 +68,18 @@ let make = (~navigation, ~route) => {
 
   let secondInputRef = React.useRef(Js.Nullable.null);
 
-  let (mutate, _) = UserEmailWithEmailMutation.use();
+  let environment = ReasonRelay.useEnvironmentFromContext();
 
-  let handleLogin = _ =>
-    if (!loading) {
-      setLoading(_ => true);
-
-      mutate(
-        ~variables={
-          input: {
-            clientMutationId: None,
-            email,
-            password,
-          },
-        },
-        ~onCompleted=
-          (data, _) => {
-            setLoading(_ => false);
-            Js.log(data);
-          },
-        (),
-      );
-
-      ();
-    };
+  let handleLogin = _ => {
+    UserLoginWithEmailMutation.commit(
+      ~environment,
+      ~setLoading,
+      ~email,
+      ~password,
+      ~navigation,
+    )
+    |> ignore;
+  };
 
   let handleRegister = _ => {
     navigation->Navigation.navigate("UserRegister");
@@ -125,6 +102,7 @@ let make = (~navigation, ~route) => {
           onSubmitEditing={_ =>
             switch (Js.Nullable.toOption(React.Ref.current(secondInputRef))) {
             | Some(ref) => ref->elementToObj##focus()
+            | None => ()
             }
           }
           style=styles##input
