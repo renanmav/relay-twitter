@@ -2,7 +2,7 @@ exception MutationFailed(string);
 
 open ReactNative;
 open ReactNavigation;
-open UserLoginWithEmailMutation_graphql.Types;
+open UserRegisterWithEmailMutation_graphql.Types;
 
 module StackParams = {
   type params =
@@ -12,17 +12,25 @@ include Stack.Make(StackParams);
 
 module UserLoginWithEmailMutation = [%relay.mutation
   {|
-    mutation UserLoginWithEmailMutation($input: UserLoginWithEmailInput!) {
-      userLoginWithEmail: UserLoginWithEmail(input: $input) {
-        token
-        error
-      }
+    mutation UserRegisterWithEmailMutation($input: UserRegisterWithEmailInput!) {
+        userRegisterWithEmail: UserRegisterWithEmail(input: $input) {
+          token
+          error
+        }
     }
   |}
 ];
 
 let commit =
-    (~environment, ~setLoading, ~email, ~password, ~navigation, ~loading) =>
+    (
+      ~environment,
+      ~email,
+      ~password,
+      ~name,
+      ~setLoading,
+      ~loading,
+      ~navigation,
+    ) =>
   if (!loading) {
     setLoading(_ => true);
 
@@ -33,6 +41,7 @@ let commit =
           clientMutationId: None,
           email,
           password,
+          name,
         },
       },
       ~onCompleted=
@@ -40,12 +49,12 @@ let commit =
           setLoading(_ => false);
 
           switch (data) {
-          | {userLoginWithEmail: None} =>
-            raise(MutationFailed("Could not find userLoginWithEmail."))
-          | {userLoginWithEmail: Some({error: Some(error)})} =>
+          | {userRegisterWithEmail: None} =>
+            raise(MutationFailed("Could not find userRegisterWithEmail."))
+          | {userRegisterWithEmail: Some({error: Some(error)})} =>
             Alert.alert(~title="Error", ~message=error, ())
-          | {userLoginWithEmail: Some(userLoginWithEmail)} =>
-            switch (userLoginWithEmail.token) {
+          | {userRegisterWithEmail: Some(userRegisterWithEmail)} =>
+            switch (userRegisterWithEmail.token) {
             | Some(token) =>
               ReactNativeAsyncStorage.setItem("token", token) |> ignore;
               navigation->Navigation.navigate("FeedNavigator");

@@ -7,17 +7,6 @@ module StackParams = {
 };
 include Stack.Make(StackParams);
 
-module UserRegisterWithEmailMutation = [%relay.mutation
-  {|
-    mutation UserRegisterWithEmailMutation($input: UserRegisterWithEmailInput!) {
-      userRegisterWithEmail: UserRegisterWithEmail(input: $input) {
-        token
-        error
-      }
-    }
-  |}
-];
-
 let logo =
   Image.Source.fromRequired(Packager.require("../../assets/img/logo.png"));
 
@@ -81,31 +70,20 @@ let make = (~navigation, ~route) => {
   let secondInputRef = React.useRef(Js.Nullable.null);
   let thirdInputRef = React.useRef(Js.Nullable.null);
 
-  let (mutate, _) = UserRegisterWithEmailMutation.use();
+  let environment = ReasonRelay.useEnvironmentFromContext();
 
-  let handleRegister = _ =>
-    if (!loading) {
-      setLoading(_ => true);
-
-      mutate(
-        ~variables={
-          input: {
-            clientMutationId: None,
-            email,
-            password,
-            name,
-          },
-        },
-        ~onCompleted=
-          (data, _) => {
-            setLoading(_ => false);
-
-            Js.log(data);
-          },
-        (),
-      )
-      |> ignore;
-    };
+  let handleRegister = _ => {
+    UserRegisterWithEmailMutation.commit(
+      ~environment,
+      ~email,
+      ~password,
+      ~name,
+      ~setLoading,
+      ~loading,
+      ~navigation,
+    )
+    |> ignore;
+  };
 
   <>
     <StatusBar barStyle=`darkContent backgroundColor="#fff" />
