@@ -2,7 +2,7 @@
 
 A twitter clone basic features built with Reason, React Native, Relay Modern and GraphQL. 🔥
 
-There are versions built in Typescript on the `ts/hoc` and `ts/hooks`
+There are versions built in Typescript on `ts/hoc` and `ts/hooks` branches
 
 # Main Features
 
