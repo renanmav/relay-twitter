@@ -27,5 +27,6 @@ As well, this server repo is [here](https://github.com/renanmav/entria-fullstack
 
 Once you cloned this repo, run:
 
+- `cd ios/ && npx pod-install && ..` to install cocoapods dependencies.
 - `yarn` or `npm i` to install dependencies.
 - `yarn android` or `yarn ios` based on which target you're working on.
