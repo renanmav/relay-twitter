@@ -61,7 +61,7 @@ let styles =
 external elementToObj: TextInput.element => Js.t({..}) = "%identity";
 
 [@react.component]
-let make = (~navigation, ~route) => {
+let make = (~navigation, ~route as _) => {
   let (name, setName) = React.useState(() => "");
   let (email, setEmail) = React.useState(() => "");
   let (password, setPassword) = React.useState(() => "");

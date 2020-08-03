@@ -66,3 +66,4 @@ lib/bs
 lib/ocaml
 
 __generated__
+ios/Podfile.lock

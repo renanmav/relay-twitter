@@ -1,4 +1,4 @@
-open ReactNative;
+// open ReactNative;
 open ReactNavigation;
 
 include Stack.Make({
@@ -6,6 +6,6 @@ include Stack.Make({
 });
 
 [@react.component]
-let make = (~navigation, ~route) => {
+let make = (~navigation as _, ~route as _) => {
   <Navigator> <Screen name="Feed" component=Feed.make /> </Navigator>;
 };
